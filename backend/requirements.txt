@@ -1,0 +1,8 @@
+aiosqlite
+databases[sqlite]
+decorator
+fastapi
+injector
+pydantic
+SQLAlchemy
+uvicorn
