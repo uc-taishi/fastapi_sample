@@ -23,7 +23,7 @@
 ### 4. ソースコードのクローン
 
 ```bash
-git clone fastapi_sample
+git clone https://github.com/uc-taishi/fastapi_sample
 ```
 
 でソースコードをダウンロードする。あるいは、

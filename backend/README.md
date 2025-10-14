@@ -77,6 +77,6 @@ repositoryとinfraの対応を定義
 
 ## 課題
 
-起動しているWebサーバ（http://localhost:3000/practice）に記載されている問題を素直に進めていってください。
+起動しているWebサーバの練習問題（http://localhost:3000/practice）に記載されている問題を素直に進めていってください。
 問題１はコード記述例として既に回答を載せています。
 問題２以降をFastAPI公式チュートリアルやSQLAlchemyの使い方を参考に実装してください。

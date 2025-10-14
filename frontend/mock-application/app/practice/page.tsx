@@ -209,7 +209,7 @@ export default function PracticePage() {
                     title="問題１：全てのユーザーデータを取得してみよう（GETリクエスト）"
                     requestHandler={handleFetchAllData}
                     responseType='table'
-                    description='全てのユーザーデータを取得します。'
+                    description='全てのユーザーデータを取得します。データを取得ボタンをクリックして、ユーザーデータが取得結果に表示されれば成功です。'
                     endpoint='/api/practice'
                     requestBody={question1RequestBody}
                     responseBody={question1ResponseBody} />
