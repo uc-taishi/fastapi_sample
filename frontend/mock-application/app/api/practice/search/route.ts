@@ -27,7 +27,8 @@ export async function GET(request: NextRequest) {
 
   // --- FastAPIへ接続する本番用の処理 ---
   try {
-    const response = await fetch(`${FASTAPI_URL}/api/practice/users?userId=${userIdQuery}`, {
+    console.log("test")
+    const response = await fetch(`${FASTAPI_URL}/api/practice/users/search?userId=${userIdQuery}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

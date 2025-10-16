@@ -4,13 +4,16 @@ import Request from "./Request";
 import Result from "./Result";
 import { ResponseData } from "@/types/ResponseData";
 import { AnyDict } from "@/types/AnyDict";
+import Table from "./Table";
 
 type QuestionProps = {
     title: string;
     subTitle?: string;
     description?: string;
     endpoint?: string;
+    processDescription?: string;
     requestBody?: AnyDict;
+    buttonType: string;
     responseBody?: AnyDict;
     requestHandler: (setIsLoading: React.Dispatch<React.SetStateAction<boolean>>, setError: React.Dispatch<React.SetStateAction<string | null>>, setData: React.Dispatch<React.SetStateAction<ResponseData | null>>) => void;
     children?: React.ReactNode;
@@ -27,18 +30,18 @@ const containerStyle = {
 };
 
 const tableStyle = {
-        width: '100%',
-        borderCollapse: 'collapse' as const, // CSSの型を修正
-        border: '1px solid #e5e7eb', // テーブル全体の外枠
-        borderRadius: '4px',
-        overflow: 'hidden', // 枠線と角丸を適用するため
-    };
+    width: '100%',
+    borderCollapse: 'collapse' as const, // CSSの型を修正
+    border: '1px solid #e5e7eb', // テーブル全体の外枠
+    borderRadius: '4px',
+    overflow: 'hidden', // 枠線と角丸を適用するため
+};
 
 const headerBgColor = '#eef2ff'; // 淡いインディゴ (TailwindCSS: indigo-50 くらい)
 const headerTextColor = '#4b5563'; // 濃い目のグレー
 
 
-const Question: React.FC<QuestionProps> = ({ title, subTitle, description, endpoint, requestBody, responseBody, requestHandler, children, responseType }) => {
+const Question: React.FC<QuestionProps> = ({ title, subTitle, description, endpoint, processDescription, buttonType, requestBody, responseBody, requestHandler, children, responseType }) => {
 
     const [data, setData] = React.useState<ResponseData | null>(null);
     const [isLoading, setIsLoading] = React.useState(false);
@@ -51,60 +54,40 @@ const Question: React.FC<QuestionProps> = ({ title, subTitle, description, endpo
             <h2 style={{ fontSize: '1.5rem', color: '#1f2937' }}>{title}</h2>
             {subTitle && <p style={{ color: '#4b5563' }}>{subTitle}</p>}
             <div style={{ marginBottom: '16px', color: '#374151' }}>
-                <p style={{ fontWeight: '600', marginBottom: '8px' }}>エンドポイント：<code style={{ backgroundColor: '#f3f4f6', padding: '2px 4px', borderRadius: '4px', color: '#374151' }}>{endpoint}</code></p>
-                {description && <p style={{ marginBottom: '16px' }}>処理の概要：{description}</p>}
-                {requestEntries.length > 0 ?
+                <div style={{ marginBottom: '16px' }}>
+                    <p style={{ fontWeight: '600', marginBottom: '8px' }}>エンドポイント</p>
+                    <code style={{ backgroundColor: '#f3f4f6', padding: '2px 4px', borderRadius: '4px', color: '#374151' }}>{endpoint}</code>
+                </div>
+                {description &&
                     <div style={{ marginBottom: '16px' }}>
-                        <p style={{ fontWeight: '600', marginBottom: '8px' }}>リクエストボディ</p>
-                        <table style={{ width: '100%', border: '1px solid #e5e7eb', borderRadius: '4px', overflow: 'hidden' }}>
-                            <thead style={{ background: headerBgColor, color: headerTextColor }}>
-                                <tr>
-                                    <th style={{ textAlign: 'left', padding: 12, borderBottom: '1px solid #9ca3af' }}>キー</th>
-                                    <th style={{ textAlign: 'left', padding: 12, borderBottom: '1px solid #9ca3af' }}>値</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {requestEntries.map(([k, v]) => (
-                                    <tr key={k} style={{ backgroundColor: '#ffffff' }}>
-                                        <td style={{ padding: 12, borderBottom: '1px solid #e5e7eb', whiteSpace: 'nowrap' }}>{k}</td>
-                                        <td style={{ padding: 12, borderBottom: '1px solid #e5e7eb' }}>
-                                            {typeof v === 'string' ? v : JSON.stringify(v)}
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
+                        <p style={{ fontWeight: '600', marginBottom: '8px' }}>処理の概要</p>
+                        {description}
                     </div>
-                    : <p style={{ marginBottom: '16px', color: '#6b7280' }}>リクエストボディはありません。</p>
                 }
-                {responseEntries.length > 0 ? (
+                {processDescription &&
                     <div style={{ marginBottom: '16px' }}>
-                        <p style={{ fontWeight: '600', marginBottom: '8px' }}>レスポンスボディ</p>
-                        <table style={{ width: '100%', border: '1px solid #e5e7eb', borderRadius: '4px', overflow: 'hidden' }}>
-                            <thead style={{ background: '#8fd1c4ff' }}>
-                                <tr>
-                                    <th style={{ textAlign: 'left', padding: 12, borderBottom: '1px solid #9ca3af' }}>キー</th>
-                                    <th style={{ textAlign: 'left', padding: 12, borderBottom: '1px solid #9ca3af' }}>値</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {responseEntries.map(([k, v]) => (
-                                    <tr key={k}>
-                                        <td style={{ padding: 12, borderBottom: '1px solid #e5e7eb', whiteSpace: 'nowrap' }}>{k}</td>
-                                        <td style={{ padding: 12, borderBottom: '1px solid #e5e7eb' }}>
-                                            {typeof v === 'string' ? v : JSON.stringify(v)}
-                                        </td>
-
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
+                        <p style={{ fontWeight: '600', marginBottom: '8px' }}>処理の詳細</p>
+                        {processDescription}
                     </div>
-                ) : <p style={{ color: '#6b7280' }}>レスポンスボディはありません。</p>
                 }
+                <div style={{ marginBottom: '16px' }}>
+                    <p style={{ fontWeight: '600', marginBottom: '8px' }}>リクエストボディ</p>
+                    {requestEntries.length > 0 ?
+                        <Table header={['キー', '値']} rows={requestEntries} headerStyle={{ background: headerBgColor, color: headerTextColor }} />
+                        :
+                        <p>リクエストボディはありません。</p>
+                    }
+                </div>
+                <div style={{ marginBottom: '16px' }}>
+                    <p style={{ fontWeight: '600', marginBottom: '8px' }}>レスポンスボディ</p>
+                    {responseEntries.length > 0 ? (
+                        <Table header={['キー', '値']} rows={responseEntries} headerStyle={{ background: '#8fd1c4ff' }} />
+                    ) : <p>レスポンスボディはありません。</p>
+                    }
+                </div>
             </div>
             {children && <div style={{ marginBottom: '16px' }}>{children}</div>}
-            <Request isLoading={isLoading} setIsLoading={setIsLoading} setError={setError} setData={setData} requestHandler={requestHandler} />
+            <Request isLoading={isLoading} buttonType={buttonType} setIsLoading={setIsLoading} setError={setError} setData={setData} requestHandler={requestHandler} />
             <Result data={data} isLoading={isLoading} error={error} responseType={responseType} />
         </div>
 

@@ -80,3 +80,6 @@ repositoryとinfraの対応を定義
 起動しているWebサーバの練習問題（http://localhost:3000/practice）に記載されている問題を素直に進めていってください。
 問題１はコード記述例として既に回答を載せています。
 問題２以降をFastAPI公式チュートリアルやSQLAlchemyの使い方を参考に実装してください。
+
+基本的に問題ごとに
+handlerファイル、usecaseファイルを追加で作成し、repositoryファイル、infraファイル、domainファイルは既存のプログラムファイルに関数を追加する形で実装してください。handlerファイルを新たに増やしたら、main.pyにルーティングの設定も行うこと。

@@ -1,8 +1,9 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Request
 from injector import Injector
+from typing import List
 
 import config
-from domain.practice_sample import OutputSample
+from domain.practice_sample import OutputSample, User
 from injectormodules.di import PracticeSampleModule
 from repository.practice_sample_repository import PracticeSampleRepository
 from usecase.practice_sample_service import PracticeSampleService
@@ -50,4 +51,54 @@ async def get_users():
 
     print('end get_users')
         
+    return output
+
+@router.get('/api/practice/users/{user_id}', response_model=OutputSample)
+async def get_users_by_user_id(user_id: str):
+    
+    output = OutputSample()
+    output.response_status = "200"
+    output.response_message = "Success"
+    user = User()
+    user.user_id = user_id
+    user.user_name = "test"
+    output.users = [user]
+
+    return output
+
+@router.get('/api/practice/users/search', response_model=OutputSample)
+async def search_users(userId: str = None, userName: str = None):
+    output = OutputSample()
+    output.response_status = "200"
+    output.response_message = "Success"
+    user = User()
+    user.user_id = userId
+    user.user_name = userName
+    output.users = [user]
+
+    return output
+
+@router.post('/api/practice/users/register', response_model=OutputSample)
+async def register_user(user: User):
+    print(user)
+    output = OutputSample()
+    output.response_status = "200"
+    output.response_message = "Success"
+    output.users = [user]
+    return output
+
+@router.put('/api/practice/users/update', response_model=OutputSample)
+async def update_user(user: User):
+    print(user)
+    output = OutputSample()
+    output.response_status = "200"
+    output.response_message = "Success"
+    return output
+
+@router.delete('/api/practice/users/delete', response_model=OutputSample)
+async def delete_user(user_id: str = None):
+    print(user_id)
+    output = OutputSample()
+    output.response_status = "200"
+    output.response_message = "Success"
     return output
