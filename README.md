@@ -26,6 +26,14 @@
 git clone https://github.com/uc-taishi/fastapi_sample
 ```
 
+### 5. mainから新しくブランチを切る（新しく切るブランチ名：feature/practice_xxx）
+
+xxxは個人情報を含めない程度の好きな文字列にしておいてください。
+
+```bash
+git checkout -b feature/practice_xxx
+```
+
 でソースコードをダウンロードする。あるいは、
 https://github.com/uc-taishi/fastapi_sample
 からZIPでダウンロードして解凍する
