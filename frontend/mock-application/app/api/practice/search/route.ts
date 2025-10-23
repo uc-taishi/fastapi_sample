@@ -10,6 +10,7 @@ export async function GET(request: NextRequest) {
   // URLSearchParamsを使ってクエリパラメータを取得
   const searchParams = request.nextUrl.searchParams;
   const userIdQuery = searchParams.get('userId'); // ?userId=... の値を取得
+  const userNameQuery = searchParams.get('userName'); // ?userName=... の値を取得
 
   // ダミーデータを使用する場合の処理
   if (USE_DUMMY_DATA) {
@@ -28,7 +29,7 @@ export async function GET(request: NextRequest) {
   // --- FastAPIへ接続する本番用の処理 ---
   try {
     console.log("test")
-    const response = await fetch(`${FASTAPI_URL}/api/practice/users/search?userId=${userIdQuery}`, {
+    const response = await fetch(`${FASTAPI_URL}/api/practice/users/search?userId=${userIdQuery}&userName=${userNameQuery}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
